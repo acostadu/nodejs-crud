@@ -26,7 +26,7 @@ router.get('/:id', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-    console.log(1);
+
     let itemIds = data.map(item => item.id);
 
     let newId = itemIds.length > 0 ? Math.max.apply(Math, itemIds) + 1 : 1;
@@ -44,5 +44,31 @@ router.post('/', function(req, res) {
 
     res.status(201).json(newItem);
 });
+
+router.put('/:id', function (req, res) {
+
+    let found = data.find(function (item) {
+        return item.id === parseInt(req.params.id);
+    });
+  
+    if (found) {
+
+        let updated = {
+            "id": found.id,
+            "name": req.body.name,
+            "price": req.body.price,
+            "stock": req.body.stock,
+            "createAt": found.createAt,
+        }
+  
+        let targetIndex = data.indexOf(found);
+  
+        data.splice(targetIndex, 1, updated);
+  
+        res.sendStatus(204)
+    } else {
+        res.sendStatus(404)
+    }
+  });
 
 module.exports = router;
