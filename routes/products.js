@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const data = [
-    { id: 1, name: "Shoes", price: 35, stock: true, createAt: new Date() },
-    { id: 2, name: "Shirts", age: 17, stock: true, createAt: new Date() },
-    { id: 3, name: "Jackets", age: 5, stock: false, createAt: new Date() },
-    { id: 4, name: "Socks", age: 6, stock: false, createAt: new Date() }
+    { "id": 1, "name": "Shoes", "price": 35, "stock": true, "createAt": new Date() },
+    { "id": 2, "name": "Shirts", "price": 17, "stock": true, "createAt": new Date() },
+    { "id": 3, "name": "Jackets", "price": 5, "stock": false, "createAt": new Date() },
+    { "id": 4, "name": "Socks", "price": 6, "stock": false, "createAt": new Date() }
 ];
 
 router.get('/', function(req, res) {
@@ -23,6 +23,26 @@ router.get('/:id', function(req, res) {
     } else {
         res.sendStatus(404);
     }
+});
+
+router.post('/', function(req, res) {
+    console.log(1);
+    let itemIds = data.map(item => item.id);
+
+    let newId = itemIds.length > 0 ? Math.max.apply(Math, itemIds) + 1 : 1;
+
+    //TODO: Completar con nuevo producto
+    let newItem = {
+        "id": newId,
+        "name": req.body.name,
+        "price": req.body.price,
+        "stock": req.body.stock,
+        "createAt": new Date()
+    }
+
+    data.push(newItem);
+
+    res.status(201).json(newItem);
 });
 
 module.exports = router;
